@@ -4,7 +4,7 @@ class_name Camera360
 
 export (float, 10, 360) var fovx = 150 setget set_fovx
 export (int, "Rectilinear", "Panini", "Fisheye", "Stereographic", "Cylindrical",
-		"Equirectangular", "Mercator") var camera_projection = 0 setget set_camera_projection
+		"Equirectangular", "Mercator") var lens = 0 setget set_lens
 export (bool) var show_grid = false setget set_show_grid
 export (int, 1, 16384) var camera_resolution = 1080
 export (float, 0.001, 10) var clip_near = 0.1
@@ -32,7 +32,7 @@ func _ready():
 	render_quad.mesh.surface_set_material(0, mat)
 	
 	mat.set_shader_param("fovx", fovx)
-	mat.set_shader_param("projection", camera_projection)
+	mat.set_shader_param("projection", lens)
 	mat.set_shader_param("resolution", get_viewport().size)
 	mat.set_shader_param("Grid", grid)
 	mat.set_shader_param("show_grid", show_grid)
@@ -80,7 +80,7 @@ func _input(event):
 		if event.scancode == KEY_G and event.pressed:
 			self.show_grid = !show_grid
 		elif event.scancode == KEY_P and event.pressed:
-			self.camera_projection = camera_projection + 1
+			self.lens = lens + 1
 		elif event.scancode == KEY_KP_ADD and event.pressed:
 			self.fovx = fovx + 5
 		elif event.scancode == KEY_KP_SUBTRACT and event.pressed:
@@ -102,17 +102,17 @@ func set_show_grid(show: bool):
 	mat.set_shader_param("show_grid", show_grid)
 
 
-func set_camera_projection(proj: int):
-	camera_projection = proj
-	if camera_projection > 6:
-		camera_projection = 0
-	mat.set_shader_param("projection", camera_projection)
+func set_lens(proj: int):
+	lens = proj
+	if lens > 6:
+		lens = 0
+	mat.set_shader_param("projection", lens)
 	call_deferred("update_projection_label")
 
 
 func update_projection_label():
 	var proj: String
-	match camera_projection:
+	match lens:
 		0:
 			proj = "Rectilinear"
 		1:
