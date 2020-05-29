@@ -36,6 +36,7 @@ func _ready():
 		var viewport = Viewport.new()
 		add_child(viewport)
 		viewport.size = camera_resolution * Vector2.ONE
+		viewport.keep_3d_linear = true
 		viewport.shadow_atlas_size = 4096
 		viewport.msaa = Viewport.MSAA_4X
 		viewports.append(viewport)
