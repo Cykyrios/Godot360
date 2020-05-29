@@ -1,6 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=7 format=2]
 
-[ext_resource path="res://Camera360/Camera360.shader" type="Shader" id=1]
+[ext_resource path="res://src/Camera360/Camera360.shader" type="Shader" id=1]
+
 
 [sub_resource type="ViewportTexture" id=1]
 

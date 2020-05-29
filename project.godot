@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Camera",
 "class": "Camera360",
 "language": "GDScript",
-"path": "res://Camera360/Camera360.gd"
+"path": "res://src/Camera360/Camera360.gd"
 } ]
 _global_script_class_icons={
 "Camera360": ""
@@ -21,8 +21,8 @@ _global_script_class_icons={
 [application]
 
 config/name="Camera360"
-run/main_scene="res://DemoScene.tscn"
-config/icon="res://icon.png"
+run/main_scene="res://src/DemoScene.tscn"
+config/icon="res://src/icon.png"
 
 [display]
 
@@ -31,4 +31,4 @@ window/size/height=720
 
 [rendering]
 
-environment/default_environment="res://default_env.tres"
+environment/default_environment="res://src/default_env.tres"

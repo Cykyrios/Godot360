@@ -1,13 +1,13 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Camera360/Camera360.gd" type="Script" id=1]
-[ext_resource path="res://NotoSans-Regular.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://DemoScene.gd" type="Script" id=3]
+[ext_resource path="res://src/DemoScene.gd" type="Script" id=1]
+[ext_resource path="res://src/Camera360/Camera360.gd" type="Script" id=2]
+[ext_resource path="res://assets/NotoSans-Regular.ttf" type="DynamicFontData" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 2 )
+font_data = ExtResource( 3 )
 
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 10, 1, 10 )
@@ -23,7 +23,7 @@ size = Vector3( 4, 3, 2 )
 [sub_resource type="CubeMesh" id=6]
 
 [node name="Spatial" type="Spatial"]
-script = ExtResource( 3 )
+script = ExtResource( 1 )
 
 [node name="ProjectionLabel" type="Label" parent="."]
 margin_left = 30.0
@@ -43,7 +43,7 @@ cull_mask = 1024
 current = true
 near = 0.5
 far = 5.0
-script = ExtResource( 1 )
+script = ExtResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )

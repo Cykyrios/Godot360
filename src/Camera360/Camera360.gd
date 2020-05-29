@@ -15,7 +15,7 @@ var viewports = []
 var cameras = []
 
 var render_quad: MeshInstance = null
-var mat = load("res://Camera360/Camera360.tres")
+var mat = load("res://src/Camera360/Camera360.tres")
 
 
 func _ready():

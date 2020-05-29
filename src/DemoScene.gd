@@ -6,7 +6,7 @@ onready var camera = $Camera360
 var speed = 0.0
 
 export (bool) var show_grid = false setget set_show_grid
-var grid = load("res://Camera360/Grid.png")
+var grid = load("res://assets/Grid.png")
 
 
 func _ready():
