@@ -53,6 +53,8 @@ func _process(delta):
 
 func set_show_grid(show: bool):
 	show_grid = show
+	if not is_inside_tree():
+		yield(self, "ready")
 	camera.render_quad.mesh.surface_get_material(0).set_shader_param("show_grid", show_grid)
 
 
