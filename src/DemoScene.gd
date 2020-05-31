@@ -20,10 +20,12 @@ func _ready():
 func _input(event):
 	var is_projection_label_outdated := false
 	if event is InputEventKey:
-		if event.scancode == KEY_G and event.pressed:
+		if event.scancode == KEY_C and event.pressed:
 			self.show_grid = !show_grid
 		elif event.scancode == KEY_L and event.pressed:
 			camera.lens += 1
+		elif event.scancode == KEY_G and event.pressed:
+			camera.globe += 1
 		elif event.scancode == KEY_KP_ADD and event.pressed:
 			camera.fovx += 5
 		elif event.scancode == KEY_KP_SUBTRACT and event.pressed:

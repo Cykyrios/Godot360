@@ -4,10 +4,12 @@ class_name Camera360
 
 enum Lens {RECTILINEAR, PANINI, FISHEYE, STEREOGRAPHIC, CYLINDRICAL,
 		EQUIRECTANGULAR, MERCATOR}
+enum Globe {CUBE_FACE, CUBE_EDGE, CUBE_CORNER}
 
 
 export (float, 10, 360) var fovx = 150 setget set_fovx
 export (Lens) var lens = 0 setget set_lens
+export (Globe) var globe = 0 setget set_globe
 export (int, 1, 16384) var camera_resolution = 1080
 export (float, 0.001, 10) var clip_near = 0.1
 export (float, 0.01, 10000) var clip_far = 1000
@@ -33,6 +35,7 @@ func _ready():
 	
 	mat.set_shader_param("fovx", fovx)
 	mat.set_shader_param("lens", lens)
+	mat.set_shader_param("globe", globe)
 	mat.set_shader_param("resolution", get_viewport().size)
 	
 	for i in range(num_cameras):
@@ -70,6 +73,14 @@ func _process(delta):
 		cameras[4].rotate_object_local(Vector3.RIGHT, PI/2)
 	if num_cameras >= 6:
 		cameras[5].rotate_object_local(Vector3.UP, PI)
+	
+	if globe == Globe.CUBE_EDGE:
+		for camera in cameras:
+			camera.rotate(global_transform.basis.y, PI / 4)
+	elif globe == Globe.CUBE_CORNER:
+		for camera in cameras:
+			camera.rotate(global_transform.basis.y, PI / 4)
+			camera.rotate(global_transform.basis.x, -atan(sqrt(2)/2))
 
 
 func set_fovx(x: float):
@@ -86,3 +97,10 @@ func set_lens(l: int):
 	if lens > Lens.size() - 1:
 		lens = 0
 	mat.set_shader_param("lens", lens)
+
+
+func set_globe(g: int):
+	globe = g
+	if globe > Globe.size() - 1:
+		globe = 0
+	mat.set_shader_param("globe", globe)

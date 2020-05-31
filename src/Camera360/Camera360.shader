@@ -6,6 +6,7 @@ const float PI = 3.14159265358979323846;
 uniform float fovx;
 
 uniform int lens;
+uniform int globe;
 uniform vec2 camera_resolution;
 uniform bool show_grid;
 
@@ -16,6 +17,15 @@ uniform sampler2D Texture2 : hint_black;
 uniform sampler2D Texture3 : hint_black;
 uniform sampler2D Texture4 : hint_black;
 uniform sampler2D Texture5 : hint_black;
+
+// structs are not available yet in 3.2
+/*
+struct Plate {
+	vec3 right;
+	vec3 up;
+	float fov;
+};
+*/
 
 
 vec3 latlon_to_ray(vec2 latlon) {
@@ -171,6 +181,108 @@ vec3 get_transformation(vec2 uv) {
 	}
 }
 
+// The following globes are available:
+// 0 = cube face
+// 1 = cube edge
+// 2 = cube corner
+// Each globe plate is defined as a float array of length 7 (structs not available yet)
+// plate = {forward(vec3), up(vec3), fov(float)}
+int get_globe_plate(vec3 ray) {
+	if (ray == vec3(0.0, 0.0, 0.0)) {
+		return -1;
+	}
+	
+	// standard cube plates (front, left, right, bottom, top, back)
+	float plates[] = {0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 90.0,
+			-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 90.0,
+			1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 90.0,
+			0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 90.0,
+			0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 90.0,
+			0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 90.0};
+	
+	if (globe == 0) {
+		int plate = 0;
+		float min_dist = length(ray - vec3(plates[0], plates[1], plates[2]));
+		for (int i = 1; i < 6; i++) {
+			vec3 fwd = vec3(plates[7 * i], plates[7 * i + 1], plates[7 * i + 2]);
+			float dist = length(ray - fwd);
+			if (dist < min_dist) {
+				plate = i;
+				min_dist = dist;
+			}
+		}
+		return plate;
+	}
+	else if (globe == 1) {
+		for (int i = 0; i < 6; i++) {
+			float x, y, z;
+			float a = PI / 4.0;
+			
+			x = plates[7 * i];
+			z = plates[7 * i + 2];
+			plates[7 * i] = x * cos(a) - z * sin(a);
+			plates[7 * i + 2] = x * sin(a) + z * cos(a);
+			x = plates[7 * i + 3];
+			z = plates[7 * i + 5];
+			plates[7 * i + 3] = x * cos(a) - z * sin(a);
+			plates[7 * i + 5] = x * sin(a) + z * cos(a);
+		}
+		int plate = 0;
+		float min_dist = length(ray - vec3(plates[0], plates[1], plates[2]));
+		for (int i = 1; i < 6; i++) {
+			vec3 fwd = vec3(plates[7 * i], plates[7 * i + 1], plates[7 * i + 2]);
+			float dist = length(ray - fwd);
+			if (dist < min_dist) {
+				plate = i;
+				min_dist = dist;
+			}
+		}
+		return plate;
+	}
+	else if (globe == 2) {
+		for (int i = 0; i < 6; i++) {
+			float x, y, z;
+			float a = PI / 4.0;
+			
+			x = plates[7 * i];
+			z = plates[7 * i + 2];
+			plates[7 * i] = x * cos(a) - z * sin(a);
+			plates[7 * i + 2] = x * sin(a) + z * cos(a);
+			x = plates[7 * i + 3];
+			z = plates[7 * i + 5];
+			plates[7 * i + 3] = x * cos(a) - z * sin(a);
+			plates[7 * i + 5] = x * sin(a) + z * cos(a);
+			
+			a = atan(1.0 / sqrt(2.0));
+			y = plates[7 * i + 1];
+			z = plates[7 * i + 2];
+			plates[7 * i + 1] = y * cos(a) - z * sin(a);
+			plates[7 * i + 2] = y * sin(a) + z * cos(a);
+			y = plates[7 * i + 4];
+			z = plates[7 * i + 5];
+			plates[7 * i + 1] = y * cos(a) - z * sin(a);
+			plates[7 * i + 2] = y * sin(a) + z * cos(a);
+		}
+		int plate = 0;
+		float min_dist = length(ray - vec3(plates[0], plates[1], plates[2]));
+		for (int i = 1; i < 6; i++) {
+			vec3 fwd = vec3(plates[7 * i], plates[7 * i + 1], plates[7 * i + 2]);
+			float dist = length(ray - fwd);
+			if (dist < min_dist) {
+				plate = i;
+				min_dist = dist;
+			}
+		}
+		return plate;
+	}
+	return -1;
+}
+
+vec2 ray_to_plate_uv(vec3 ray, int plate) {
+	// structs or arrays are needed here
+	return vec2(0.0, 0.0);
+}
+
 
 void vertex() {
 	POSITION = vec4(VERTEX, 1.0);
@@ -198,55 +310,54 @@ void fragment() {
 	if (pos == vec3(0.0, 0.0, 0.0)) {
 		ALBEDO = pos;
 	} else {
-		float ax = abs(pos.x);
-		float ay = abs(pos.y);
-		float az = abs(pos.z);
-		
-		if (az >= ax && az >= ay) {
-			if (pos.z < 0.0) {
-				uv = vec2(0.5 * (vec2(pos.x / az, pos.y / az)) + 0.5);
+		int plate_idx = get_globe_plate(pos);
+		// Move uv out of switch, update by calling ray_to_plate_uv(pos, globe.plate[plate_idx])
+		switch (plate_idx) {
+			case 0:
+				uv = vec2(0.5 * (vec2(pos.x / abs(pos.z), pos.y / abs(pos.z))) + 0.5);
 				ALBEDO = texture(Texture0, uv).rgb;
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_front, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
-			} else {
-				uv = vec2(0.5 * (vec2(-pos.x / az, pos.y / az)) + 0.5);
-				ALBEDO = texture(Texture5, uv).rgb;
-				if (show_grid) {
-					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_back, 1.0) * texture(Grid, uv)).rgb, alpha);
-				}
-			}
-		} else if (ax >= ay && ax >= az) {
-			if (pos.x < 0.0) {
-				uv = vec2(0.5 * (vec2(-pos.z / ax, pos.y / ax)) + 0.5);
+				break;
+			case 1:
+				uv = vec2(0.5 * (vec2(-pos.z / abs(pos.x), pos.y / abs(pos.x))) + 0.5);
 				ALBEDO = texture(Texture1, uv).rgb;
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_left, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
-			} else {
-				ALBEDO = color_right;
-				uv = vec2(0.5 * (vec2(pos.z / ax, pos.y / ax)) + 0.5);
+				break;
+			case 2:
+				uv = vec2(0.5 * (vec2(pos.z / abs(pos.x), pos.y / abs(pos.x))) + 0.5);
 				ALBEDO = texture(Texture2, uv).rgb;
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_right, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
-			}
-		} else if (ay >= ax && ay >= az) {
-			if (pos.y < 0.0) {
-				uv = vec2(0.5 * (vec2(pos.x / ay, -pos.z / ay)) + 0.5);
+				break;
+			case 3:
+				uv = vec2(0.5 * (vec2(pos.x / abs(pos.y), -pos.z / abs(pos.y))) + 0.5);
 				ALBEDO = texture(Texture3, uv).rgb;
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_bottom, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
-			} else {
-				uv = vec2(0.5 * (vec2(pos.x / ay, pos.z / ay)) + 0.5);
+				break;
+			case 4:
+				uv = vec2(0.5 * (vec2(pos.x / abs(pos.y), pos.z / abs(pos.y))) + 0.5);
 				ALBEDO = texture(Texture4, uv).rgb;
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_top, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
-			}
-		} else {
-			ALBEDO = vec3(0.0, 0.0, 0.0);
+				break;
+			case 5:
+				uv = vec2(0.5 * (vec2(-pos.x / abs(pos.z), pos.y / abs(pos.z))) + 0.5);
+				ALBEDO = texture(Texture5, uv).rgb;
+				if (show_grid) {
+					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_back, 1.0) * texture(Grid, uv)).rgb, alpha);
+				}
+				break;
+			default:
+				ALBEDO = vec3(0.0, 0.0, 0.0);
+				break;
 		}
 	}
 	if (debug) {
