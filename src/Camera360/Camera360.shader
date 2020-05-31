@@ -195,58 +195,30 @@ void fragment() {
 	} else {
 		pos = get_transformation(vec2(uv.x - 0.5 * view_ratio, uv.y - 0.5) * 1.0);
 	}
-	if (pos == vec3(0.0, 0.0, 0.0)) {
+	if (pos.z >= 0.0) {
 		ALBEDO = pos;
 	} else {
-		float ax = abs(pos.x);
-		float ay = abs(pos.y);
-		float az = abs(pos.z);
+		float dist = 0.5 / tan(radians(160.0) / 2.0);
+		float size = 2.0 * dist * tan(PI / 4.0);
 		
-		if (az >= ax && az >= ay) {
-			if (pos.z < 0.0) {
-				uv = vec2(0.5 * (vec2(pos.x / az, pos.y / az)) + 0.5);
-				ALBEDO = texture(Texture0, uv).rgb;
-				if (show_grid) {
-					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_front, 1.0) * texture(Grid, uv)).rgb, alpha);
-				}
-			} else {
-				uv = vec2(0.5 * (vec2(-pos.x / az, pos.y / az)) + 0.5);
-				ALBEDO = texture(Texture5, uv).rgb;
-				if (show_grid) {
-					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_back, 1.0) * texture(Grid, uv)).rgb, alpha);
-				}
-			}
-		} else if (ax >= ay && ax >= az) {
-			if (pos.x < 0.0) {
-				uv = vec2(0.5 * (vec2(-pos.z / ax, pos.y / ax)) + 0.5);
-				ALBEDO = texture(Texture1, uv).rgb;
-				if (show_grid) {
-					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_left, 1.0) * texture(Grid, uv)).rgb, alpha);
-				}
-			} else {
-				ALBEDO = color_right;
-				uv = vec2(0.5 * (vec2(pos.z / ax, pos.y / ax)) + 0.5);
-				ALBEDO = texture(Texture2, uv).rgb;
-				if (show_grid) {
-					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_right, 1.0) * texture(Grid, uv)).rgb, alpha);
-				}
-			}
-		} else if (ay >= ax && ay >= az) {
-			if (pos.y < 0.0) {
-				uv = vec2(0.5 * (vec2(pos.x / ay, -pos.z / ay)) + 0.5);
-				ALBEDO = texture(Texture3, uv).rgb;
-				if (show_grid) {
-					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_bottom, 1.0) * texture(Grid, uv)).rgb, alpha);
-				}
-			} else {
-				uv = vec2(0.5 * (vec2(pos.x / ay, pos.z / ay)) + 0.5);
-				ALBEDO = texture(Texture4, uv).rgb;
-				if (show_grid) {
-					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_top, 1.0) * texture(Grid, uv)).rgb, alpha);
-				}
+		float u = pos.x / pos.z * dist;
+		float v = pos.y / pos.z * dist;
+		
+		if (abs(u) < size / 2.0 && abs(v) < size / 2.0) {
+			uv = vec2(0.5 * (vec2(pos.x / abs(pos.z), pos.y / abs(pos.z))) + 0.5);
+			ALBEDO = texture(Texture0, uv).rgb;
+			if (show_grid) {
+				ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_front, 1.0) * texture(Grid, uv)).rgb, alpha);
+				ALBEDO = (vec4(color_front, 1.0) * texture(Grid, uv)).rgb
 			}
 		} else {
-			ALBEDO = vec3(0.0, 0.0, 0.0);
+			uv = vec2(0.5 * (vec2(pos.x / abs(pos.z), pos.y / abs(pos.z))) + 0.5);
+			uv = -vec2(u, v) + 0.5;
+			ALBEDO = texture(Texture1, uv).rgb;
+			if (show_grid) {
+				ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_left, 1.0) * texture(Grid, uv)).rgb, alpha);
+				ALBEDO = (vec4(color_left, 1.0) * texture(Grid, uv)).rgb
+			}
 		}
 	}
 	if (debug) {
