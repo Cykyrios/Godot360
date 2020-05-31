@@ -2,9 +2,12 @@ extends Camera
 class_name Camera360
 
 
+enum Lens {RECTILINEAR, PANINI, FISHEYE, STEREOGRAPHIC, CYLINDRICAL,
+		EQUIRECTANGULAR, MERCATOR}
+
+
 export (float, 10, 360) var fovx = 150 setget set_fovx
-export (int, "Rectilinear", "Panini", "Fisheye", "Stereographic", "Cylindrical",
-		"Equirectangular", "Mercator") var lens = 0 setget set_lens
+export (Lens) var lens = 0 setget set_lens
 export (int, 1, 16384) var camera_resolution = 1080
 export (float, 0.001, 10) var clip_near = 0.1
 export (float, 0.01, 10000) var clip_far = 1000
@@ -29,7 +32,7 @@ func _ready():
 	render_quad.mesh.surface_set_material(0, mat)
 	
 	mat.set_shader_param("fovx", fovx)
-	mat.set_shader_param("projection", lens)
+	mat.set_shader_param("lens", lens)
 	mat.set_shader_param("resolution", get_viewport().size)
 	
 	for i in range(num_cameras):
@@ -80,6 +83,6 @@ func set_fovx(x: float):
 
 func set_lens(l: int):
 	lens = l
-	if lens > 6:
+	if lens > Lens.size() - 1:
 		lens = 0
-	mat.set_shader_param("projection", lens)
+	mat.set_shader_param("lens", lens)

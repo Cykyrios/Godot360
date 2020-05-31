@@ -24,8 +24,8 @@ The process of enabling 360° rendering is fairly easy:
 Note that the resolution export applies to all six cameras, as well as the clip_near and clip_far properties. I recommend not changing the Camera360's own clip planes nor its FoV as they have no effect.
 
 ## Demo controls
-The included demo allows you to change projections and display an overlay of the original cameras:
-* P switches to the next projection
+The included demo allows you to change lenses (projections) and display an overlay of the original cameras:
+* L switches to the next lens/projection
 * G toggles the grid overlay
 * Use Numpad +/- or the mouse wheel to change the horizontal FoV in increments of 5°
 * Click the left or right mouse buttons to make the camera spin either direction

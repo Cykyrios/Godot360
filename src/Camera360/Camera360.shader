@@ -5,7 +5,7 @@ const float PI = 3.14159265358979323846;
 
 uniform float fovx;
 
-uniform int projection;
+uniform int lens;
 uniform vec2 camera_resolution;
 uniform bool show_grid;
 
@@ -160,7 +160,7 @@ vec3 mercator_ray(vec2 p) {
 }
 
 vec3 get_transformation(vec2 uv) {
-	switch (projection) {
+	switch (lens) {
 		case 0: return(rectilinear_ray(uv));
 		case 1: return(panini_ray(uv));
 		case 2: return(fisheye_ray(uv));

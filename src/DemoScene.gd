@@ -22,7 +22,7 @@ func _input(event):
 	if event is InputEventKey:
 		if event.scancode == KEY_G and event.pressed:
 			self.show_grid = !show_grid
-		elif event.scancode == KEY_P and event.pressed:
+		elif event.scancode == KEY_L and event.pressed:
 			camera.lens += 1
 		elif event.scancode == KEY_KP_ADD and event.pressed:
 			camera.fovx += 5
@@ -73,4 +73,4 @@ func update_projection_label():
 			proj = "Equirectangular"
 		6:
 			proj = "Mercator"
-	$ProjectionLabel.text = "Projection: %s\nFoV: %d°" % [proj, camera.fovx]
+	$ProjectionLabel.text = "Lens: %s\nFoV: %d°" % [proj, camera.fovx]
