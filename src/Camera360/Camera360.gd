@@ -18,7 +18,7 @@ var viewports = []
 var cameras = []
 
 var render_quad: MeshInstance = null
-var mat = load("res://src/Camera360/Camera360.tres")
+var mat = ShaderMaterial.new()
 
 
 func _ready():
@@ -31,6 +31,7 @@ func _ready():
 	render_quad.layers = 1024
 	render_quad.mesh.surface_set_material(0, mat)
 	
+	mat.shader = load(get_script().resource_path.replace(".gd", ".shader"))
 	mat.set_shader_param("fovx", fovx)
 	mat.set_shader_param("lens", lens)
 	mat.set_shader_param("resolution", get_viewport().size)
