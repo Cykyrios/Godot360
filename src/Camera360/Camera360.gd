@@ -11,7 +11,7 @@ export (Lens) var lens = 0 setget set_lens
 export (int, 1, 16384) var camera_resolution = 1080
 export (float, 0.001, 10) var clip_near = 0.1
 export (float, 0.01, 10000) var clip_far = 1000
-export (int, 3, 6) var num_cameras = 6
+export (int, 1, 6) var num_cameras = 6
 export (int, 1, 20) var render_layer = 11
 export (Environment) var camera_environment
 
@@ -66,7 +66,8 @@ func _ready():
 func _process(delta):
 	for camera in cameras:
 		camera.global_transform = global_transform
-	cameras[1].rotate_object_local(Vector3.UP, PI/2)
+	if num_cameras >= 2:
+		cameras[1].rotate_object_local(Vector3.UP, PI/2)
 	if num_cameras >= 3:
 		cameras[2].rotate_object_local(Vector3.UP, -PI/2)
 	if num_cameras >= 4:
