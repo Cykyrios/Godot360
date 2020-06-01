@@ -12,25 +12,30 @@ export (int, 1, 16384) var camera_resolution = 1080
 export (float, 0.001, 10) var clip_near = 0.1
 export (float, 0.01, 10000) var clip_far = 1000
 export (int, 1, 6) var num_cameras = 6
+export (int, 1, 20) var render_layer = 11
 export (Environment) var camera_environment
 
 var viewports = []
 var cameras = []
 
 var render_quad: MeshInstance = null
-var mat = load("res://src/Camera360/Camera360.tres")
+var mat = ShaderMaterial.new()
 
 
 func _ready():
+	render_layer = int(pow(2, render_layer - 1))
+	cull_mask = render_layer
+	
 	render_quad = MeshInstance.new()
 	add_child(render_quad)
 	render_quad.translate_object_local(Vector3.FORWARD * (near + 0.1 * (far - near)))
 	render_quad.rotate_object_local(Vector3.RIGHT, PI / 2)
 	render_quad.mesh = QuadMesh.new()
 	render_quad.mesh.size = Vector2(2, 2)
-	render_quad.layers = 1024
+	render_quad.layers = render_layer
 	render_quad.mesh.surface_set_material(0, mat)
 	
+	mat.shader = load(get_script().resource_path.replace(".gd", ".shader"))
 	mat.set_shader_param("fovx", fovx)
 	mat.set_shader_param("lens", lens)
 	mat.set_shader_param("resolution", get_viewport().size)
@@ -50,7 +55,7 @@ func _ready():
 		camera.fov = 90
 		camera.near = clip_near
 		camera.far = clip_far
-		camera.cull_mask -= 1024
+		camera.cull_mask -= render_layer
 		cameras.append(camera)
 	
 	viewports[1].size *= 2
