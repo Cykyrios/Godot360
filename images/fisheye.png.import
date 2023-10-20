@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c70jgdo10645p"
-path="res://.godot/imported/icon.png-ba6141472526d020e72ec2b18a7f49b1.ctex"
+uid="uid://db8ja2dpqtttv"
+path="res://.godot/imported/fisheye.png-349373f7e3749d1d06958ff2f490cdca.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/icon.png"
-dest_files=["res://.godot/imported/icon.png-ba6141472526d020e72ec2b18a7f49b1.ctex"]
+source_file="res://images/fisheye.png"
+dest_files=["res://.godot/imported/fisheye.png-349373f7e3749d1d06958ff2f490cdca.ctex"]
 
 [params]
 

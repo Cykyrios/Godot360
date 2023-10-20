@@ -6,29 +6,24 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[ {
-"base": "Camera",
-"class": "Camera360",
-"language": "GDScript",
-"path": "res://src/Camera360/Camera360.gd"
-} ]
-_global_script_class_icons={
-"Camera360": ""
-}
+config_version=5
 
 [application]
 
 config/name="Camera360"
-run/main_scene="res://src/DemoScene.tscn"
+run/main_scene="res://src/demo_scene.tscn"
+config/features=PackedStringArray("4.1")
 config/icon="res://src/icon.png"
+
+[debug]
+
+gdscript/warnings/untyped_declaration=1
 
 [display]
 
-window/size/width=1280
-window/size/height=720
+window/size/viewport_width=1280
+window/size/viewport_height=720
 
 [rendering]
 
-environment/default_environment="res://src/default_env.tres"
+environment/defaults/default_environment="res://src/default_env.tres"

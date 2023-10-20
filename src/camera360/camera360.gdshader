@@ -1,7 +1,5 @@
 shader_type spatial;
-render_mode unshaded;
-
-const float PI = 3.14159265358979323846;
+render_mode unshaded, cull_front;
 
 uniform float fovx;
 
@@ -10,12 +8,12 @@ uniform vec2 camera_resolution;
 uniform bool show_grid;
 
 uniform sampler2D Grid;
-uniform sampler2D Texture0 : hint_black;
-uniform sampler2D Texture1 : hint_black;
-uniform sampler2D Texture2 : hint_black;
-uniform sampler2D Texture3 : hint_black;
-uniform sampler2D Texture4 : hint_black;
-uniform sampler2D Texture5 : hint_black;
+uniform sampler2D Texture0 : hint_default_black;
+uniform sampler2D Texture1 : hint_default_black;
+uniform sampler2D Texture2 : hint_default_black;
+uniform sampler2D Texture3 : hint_default_black;
+uniform sampler2D Texture4 : hint_default_black;
+uniform sampler2D Texture5 : hint_default_black;
 
 
 vec3 latlon_to_ray(vec2 latlon) {
@@ -66,7 +64,7 @@ vec3 panini_ray(vec2 p) {
 
 vec3 fisheye_inverse(vec2 p) {
 	float r = sqrt(p.x * p.x + p.y * p.y);
-	
+
 	if (r > PI) {
 		return vec3(0.0, 0.0, 0.0);
 	}
@@ -171,6 +169,9 @@ vec3 get_transformation(vec2 uv) {
 	}
 }
 
+vec3 srgb_to_linear(vec3 color) {
+	return color * (color * (color * 0.305306011 + 0.682171111) + 0.012522878);
+}
 
 void vertex() {
 	POSITION = vec4(VERTEX, 1.0);
@@ -178,7 +179,7 @@ void vertex() {
 
 void fragment() {
 	bool debug = false;
-	
+
 	vec3 color_front = vec3(1.0, 1.0, 1.0);
 	vec3 color_back = vec3(1.0, 1.0, 0.0);
 	vec3 color_left = vec3(1.0, 0.0, 0.0);
@@ -186,7 +187,7 @@ void fragment() {
 	vec3 color_bottom = vec3(0.0, 1.0, 0.0);
 	vec3 color_top = vec3(0.0, 0.0, 1.0);
 	float alpha = 0.5;
-	
+
 	float view_ratio = VIEWPORT_SIZE.x / VIEWPORT_SIZE.y;
 	vec2 uv = FRAGCOORD.xy / min(VIEWPORT_SIZE.x, VIEWPORT_SIZE.y);
 	vec3 pos = vec3(0.0, 0.0, 0.0);
@@ -201,17 +202,17 @@ void fragment() {
 		float ax = abs(pos.x);
 		float ay = abs(pos.y);
 		float az = abs(pos.z);
-		
+
 		if (az >= ax && az >= ay) {
 			if (pos.z < 0.0) {
 				uv = vec2(0.5 * (vec2(pos.x / az, pos.y / az)) + 0.5);
-				ALBEDO = texture(Texture0, uv).rgb;
+				ALBEDO = srgb_to_linear(texture(Texture0, uv).rgb);
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_front, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
 			} else {
 				uv = vec2(0.5 * (vec2(-pos.x / az, pos.y / az)) + 0.5);
-				ALBEDO = texture(Texture5, uv).rgb;
+				ALBEDO = srgb_to_linear(texture(Texture5, uv).rgb);
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_back, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
@@ -219,14 +220,14 @@ void fragment() {
 		} else if (ax >= ay && ax >= az) {
 			if (pos.x < 0.0) {
 				uv = vec2(0.5 * (vec2(-pos.z / ax, pos.y / ax)) + 0.5);
-				ALBEDO = texture(Texture1, uv).rgb;
+				ALBEDO = srgb_to_linear(texture(Texture1, uv).rgb);
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_left, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
 			} else {
 				ALBEDO = color_right;
 				uv = vec2(0.5 * (vec2(pos.z / ax, pos.y / ax)) + 0.5);
-				ALBEDO = texture(Texture2, uv).rgb;
+				ALBEDO = srgb_to_linear(texture(Texture2, uv).rgb);
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_right, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
@@ -234,13 +235,13 @@ void fragment() {
 		} else if (ay >= ax && ay >= az) {
 			if (pos.y < 0.0) {
 				uv = vec2(0.5 * (vec2(pos.x / ay, -pos.z / ay)) + 0.5);
-				ALBEDO = texture(Texture3, uv).rgb;
+				ALBEDO = srgb_to_linear(texture(Texture3, uv).rgb);
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_bottom, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
 			} else {
 				uv = vec2(0.5 * (vec2(pos.x / ay, pos.z / ay)) + 0.5);
-				ALBEDO = texture(Texture4, uv).rgb;
+				ALBEDO = srgb_to_linear(texture(Texture4, uv).rgb);
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_top, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
