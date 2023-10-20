@@ -49,7 +49,9 @@ func _ready() -> void:
 
 		var camera := Camera3D.new()
 		viewport.add_child(camera)
-		camera.fov = 90
+		camera.fov = 100
+		if i == 0:
+			mat.set_shader_parameter("subcamera_fov", camera.fov)
 		camera.near = clip_near
 		camera.far = clip_far
 		camera.cull_mask -= render_layer

@@ -1,6 +1,7 @@
 shader_type spatial;
 render_mode unshaded, cull_front;
 
+uniform float subcamera_fov = 100.0;
 uniform float fovx;
 
 uniform int lens;
@@ -203,15 +204,16 @@ void fragment() {
 		float ay = abs(pos.y);
 		float az = abs(pos.z);
 
+		float fov_fix = 1.0 / tan(radians(subcamera_fov / 2.0));
 		if (az >= ax && az >= ay) {
 			if (pos.z < 0.0) {
-				uv = vec2(0.5 * (vec2(pos.x / az, pos.y / az)) + 0.5);
+				uv = vec2(fov_fix * 0.5 * (vec2(pos.x / az, pos.y / az)) + 0.5);
 				ALBEDO = srgb_to_linear(texture(Texture0, uv).rgb);
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_front, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
 			} else {
-				uv = vec2(0.5 * (vec2(-pos.x / az, pos.y / az)) + 0.5);
+				uv = vec2(fov_fix * 0.5 * (vec2(-pos.x / az, pos.y / az)) + 0.5);
 				ALBEDO = srgb_to_linear(texture(Texture5, uv).rgb);
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_back, 1.0) * texture(Grid, uv)).rgb, alpha);
@@ -219,14 +221,14 @@ void fragment() {
 			}
 		} else if (ax >= ay && ax >= az) {
 			if (pos.x < 0.0) {
-				uv = vec2(0.5 * (vec2(-pos.z / ax, pos.y / ax)) + 0.5);
+				uv = vec2(fov_fix * 0.5 * (vec2(-pos.z / ax, pos.y / ax)) + 0.5);
 				ALBEDO = srgb_to_linear(texture(Texture1, uv).rgb);
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_left, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
 			} else {
 				ALBEDO = color_right;
-				uv = vec2(0.5 * (vec2(pos.z / ax, pos.y / ax)) + 0.5);
+				uv = vec2(fov_fix * 0.5 * (vec2(pos.z / ax, pos.y / ax)) + 0.5);
 				ALBEDO = srgb_to_linear(texture(Texture2, uv).rgb);
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_right, 1.0) * texture(Grid, uv)).rgb, alpha);
@@ -234,13 +236,13 @@ void fragment() {
 			}
 		} else if (ay >= ax && ay >= az) {
 			if (pos.y < 0.0) {
-				uv = vec2(0.5 * (vec2(pos.x / ay, -pos.z / ay)) + 0.5);
+				uv = vec2(fov_fix * 0.5 * (vec2(pos.x / ay, -pos.z / ay)) + 0.5);
 				ALBEDO = srgb_to_linear(texture(Texture3, uv).rgb);
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_bottom, 1.0) * texture(Grid, uv)).rgb, alpha);
 				}
 			} else {
-				uv = vec2(0.5 * (vec2(pos.x / ay, pos.z / ay)) + 0.5);
+				uv = vec2(fov_fix * 0.5 * (vec2(pos.x / ay, pos.z / ay)) + 0.5);
 				ALBEDO = srgb_to_linear(texture(Texture4, uv).rgb);
 				if (show_grid) {
 					ALBEDO = mix(ALBEDO, ALBEDO * (vec4(color_top, 1.0) * texture(Grid, uv)).rgb, alpha);
