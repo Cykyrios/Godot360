@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://jnog7q8d5x1o"]
+[gd_scene load_steps=14 format=3 uid="uid://jnog7q8d5x1o"]
 
 [ext_resource type="Script" path="res://src/demo_scene.gd" id="1"]
 [ext_resource type="Script" path="res://src/camera360/camera360.gd" id="2"]
@@ -25,6 +25,19 @@ cache/0/16/0/underline_position = 0.0
 cache/0/16/0/underline_thickness = 0.0
 cache/0/16/0/scale = 1.0
 cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/16/0/kerning_overrides/20/0 = Vector2(0, 0)
+cache/0/20/0/ascent = 0.0
+cache/0/20/0/descent = 0.0
+cache/0/20/0/underline_position = 0.0
+cache/0/20/0/underline_thickness = 0.0
+cache/0/20/0/scale = 1.0
+cache/0/20/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/20/0/kerning_overrides/20/0 = Vector2(0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_oxlj8"]
+font_size = 20
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="BoxMesh" id="2"]
 size = Vector3(10, 1, 10)
@@ -57,6 +70,7 @@ offset_bottom = 79.0
 theme_override_fonts/font = SubResource("1")
 text = "Lens: 
 FoV: "
+label_settings = SubResource("LabelSettings_oxlj8")
 
 [node name="Camera360" type="Camera3D" parent="."]
 unique_name_in_owner = true
