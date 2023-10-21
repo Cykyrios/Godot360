@@ -10,6 +10,7 @@ enum Lens {RECTILINEAR, PANINI, FISHEYE, STEREOGRAPHIC, CYLINDRICAL, EQUIRECTANG
 @export_range(0.001, 10) var clip_near := 0.1
 @export_range(0.01, 10000) var clip_far := 1000.0
 @export_range(1, 6) var num_cameras := 6
+@export_range(90, 120) var camera_fov := 100
 @export_range(1, 20) var render_layer := 11
 @export var camera_environment: Environment = null
 
@@ -37,6 +38,7 @@ func _ready() -> void:
 	mat.set_shader_parameter("fovx", fovx)
 	mat.set_shader_parameter("lens", lens)
 	mat.set_shader_parameter("resolution", get_viewport().size)
+	mat.set_shader_parameter("subcamera_fov", camera_fov)
 
 	for i in num_cameras:
 		var viewport := SubViewport.new()
@@ -49,9 +51,7 @@ func _ready() -> void:
 
 		var camera := Camera3D.new()
 		viewport.add_child(camera)
-		camera.fov = 100
-		if i == 0:
-			mat.set_shader_parameter("subcamera_fov", camera.fov)
+		camera.fov = camera_fov
 		camera.near = clip_near
 		camera.far = clip_far
 		camera.cull_mask -= render_layer
