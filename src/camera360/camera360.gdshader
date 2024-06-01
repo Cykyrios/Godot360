@@ -195,7 +195,7 @@ void fragment() {
 	if (view_ratio > 1.0) {
 		pos = get_transformation(vec2(uv.x - 0.5 * view_ratio, uv.y - 0.5) * 1.0);
 	} else {
-		pos = get_transformation(vec2(uv.x - 0.5 * view_ratio, uv.y - 0.5) * 1.0);
+		pos = get_transformation(vec2(uv.x - 0.5, uv.y - 0.5 * view_ratio) * 1.0);
 	}
 	if (pos == vec3(0.0, 0.0, 0.0)) {
 		ALBEDO = pos;
