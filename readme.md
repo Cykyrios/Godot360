@@ -12,6 +12,7 @@ The code is based on [these](https://github.com/shaunlebron/blinky) [repos](http
 * Cylindrical: What you would obtain if you flattened a cylinder
 * Equirectangular: General panorama projection
 * Mercator: Usually used for maps
+* Fulldome: An adaptation of the fisheye lens that conforms to a format used to do video projection in planetariums
 
 Note that I am no expert on those projections, you can find much more details about them from better sources.
 
