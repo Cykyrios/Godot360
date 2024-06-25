@@ -89,7 +89,7 @@ vec3 fisheye_ray(vec2 p) {
 vec3 fulldome(vec2 p) {
 	// This will dezoom enough that we should get exactly
 	// all of the fov in the viewport
-	vec2 dezoomed = p*2.0;
+	vec2 dezoomed = p * 2.0;
 	// For fulldome output, we want to crop the ouput so that we only render
 	// the circle corresponding to the fov
 	if (length(dezoomed) > 1.0) {
@@ -98,6 +98,7 @@ vec3 fulldome(vec2 p) {
 	// If we are within the 1 unit circle, we want the fisheye perspective.
 	return fisheye_ray(dezoomed);
 }
+
 vec3 stereographic_inverse(vec2 p) {
 	float scale = 0.5;
 	float r = sqrt(p.x * p.x + p.y * p.y);
