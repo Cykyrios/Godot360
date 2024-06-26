@@ -74,4 +74,6 @@ func update_projection_label() -> void:
 			proj = "Equirectangular"
 		Camera360.Lens.MERCATOR:
 			proj = "Mercator"
+		Camera360.Lens.FULLDOME:
+			proj = "Fulldome"
 	projection_label.text = "Lens: %s\nFoV: %d°" % [proj, camera.fovx]

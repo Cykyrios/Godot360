@@ -2,7 +2,7 @@ class_name Camera360
 extends Camera3D
 
 
-enum Lens {RECTILINEAR, PANINI, FISHEYE, STEREOGRAPHIC, CYLINDRICAL, EQUIRECTANGULAR, MERCATOR}
+enum Lens {RECTILINEAR, PANINI, FISHEYE, STEREOGRAPHIC, CYLINDRICAL, EQUIRECTANGULAR, MERCATOR, FULLDOME}
 
 @export_range(10, 360) var fovx := 150.0: set = set_fovx
 @export var lens := Lens.RECTILINEAR: set = set_lens
