@@ -188,7 +188,7 @@ vec3 srgb_to_linear(vec3 color) {
 }
 
 void vertex() {
-	POSITION = vec4(VERTEX, 1.0);
+	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
 }
 
 void fragment() {
