@@ -3,6 +3,8 @@ This is an attempt at making a 360° camera in Godot, to allow for both panorami
 
 I started working on this for two reasons: one of my own projects could benefit from a proper fisheye camera, and to follow up on [this issue on Godot's repo](https://github.com/godotengine/godot/issues/7340).
 
+**Important note**: Godot 4.3 introduced a change in how shaders handle depth, which is incompatible with versions 4.2 and earlier. If you need an earlier version of Godot, you will need to revert commit f22d98e.
+
 ## Globes and lenses
 The code is based on [these](https://github.com/shaunlebron/blinky) [repos](https://github.com/shaunlebron/flex-fov), with a single standard cube "globe" (I may try to add edge-centered and corner-centered cubes for performance), and the following lenses:
 * Rectilinear: This is the standard projection, the FoV cannot reach nor exceed 180°; distortion in the corners is quite noticeable at an FoV of 120°, and the center of the image gets heavily compressed.
