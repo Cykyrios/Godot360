@@ -11,7 +11,8 @@ var speed := 0.0
 		show_grid = value
 		if not is_inside_tree():
 			await ready
-		camera.render_quad.mesh.surface_get_material(0).set_shader_parameter("show_grid", show_grid)
+		var camera_material := camera.render_quad.mesh.surface_get_material(0) as ShaderMaterial
+		camera_material.set_shader_parameter("show_grid", show_grid)
 var grid := preload("res://demo/assets/grid.png")
 
 
@@ -26,26 +27,31 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	var is_projection_label_outdated := false
 	if event is InputEventKey:
-		if event.keycode == KEY_G and event.pressed:
+		var key_event := event as InputEventKey
+		if key_event.keycode == KEY_G and key_event.pressed:
 			self.show_grid = not show_grid
-		elif event.keycode == KEY_L and event.pressed:
-			camera.activate_next_lens()
-		elif event.keycode == KEY_KP_ADD and event.pressed:
+		elif key_event.keycode == KEY_L and key_event.pressed:
+			if key_event.shift_pressed:
+				activate_previous_lens()
+			else:
+				activate_next_lens()
+		elif key_event.keycode == KEY_KP_ADD and key_event.pressed:
 			camera.fovx += 5
-		elif event.keycode == KEY_KP_SUBTRACT and event.pressed:
+		elif key_event.keycode == KEY_KP_SUBTRACT and key_event.pressed:
 			camera.fovx -= 5
 		is_projection_label_outdated = true
 
 	elif event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var button_event := event as InputEventMouseButton
+		if button_event.button_index == MOUSE_BUTTON_LEFT and button_event.pressed:
 			speed += 0.25
-		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		elif button_event.button_index == MOUSE_BUTTON_RIGHT and button_event.pressed:
 			speed -= 0.25
 		speed = clampf(speed, -1.0, 1.0)
 
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+		if button_event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			camera.fovx -= 5
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+		elif button_event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			camera.fovx += 5
 		is_projection_label_outdated = true
 
@@ -55,6 +61,20 @@ func _input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	camera.rotate(Vector3.UP, speed * delta)
+
+
+func activate_next_lens() -> void:
+	var idx := Camera360.Lens.values().find(camera.lens) + 1
+	if idx >= Camera360.Lens.values().size():
+		idx = 0
+	camera.set_lens(Camera360.Lens.values()[idx] as Camera360.Lens)
+
+
+func activate_previous_lens() -> void:
+	var idx := Camera360.Lens.values().find(camera.lens) - 1
+	if idx < 0:
+		idx = Camera360.Lens.values().size() - 1
+	camera.set_lens(Camera360.Lens.values()[idx] as Camera360.Lens)
 
 
 func update_projection_label() -> void:

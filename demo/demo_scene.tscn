@@ -72,7 +72,7 @@ text = "Lens:
 FoV: "
 label_settings = SubResource("LabelSettings_oxlj8")
 
-[node name="Camera360" type="Camera3D" parent="."]
+[node name="Camera360" type="Camera3D" parent="." node_paths=PackedStringArray("subviewport")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 cull_mask = 1024
@@ -80,6 +80,11 @@ current = true
 near = 0.5
 far = 5.0
 script = ExtResource("2")
+subviewport = NodePath("SubViewport")
+
+[node name="SubViewport" type="SubViewport" parent="Camera360"]
+msaa_3d = 2
+size = Vector2i(1024, 1024)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
