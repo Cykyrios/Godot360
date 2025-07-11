@@ -11,9 +11,9 @@ config_version=5
 [application]
 
 config/name="Camera360"
-run/main_scene="res://src/demo_scene.tscn"
+run/main_scene="res://demo/demo_scene.tscn"
 config/features=PackedStringArray("4.3")
-config/icon="res://src/icon.png"
+config/icon="res://icon.png"
 
 [debug]
 
@@ -26,4 +26,4 @@ window/size/viewport_height=720
 
 [rendering]
 
-environment/defaults/default_environment="res://src/default_env.tres"
+environment/defaults/default_environment="res://demo/default_env.tres"

@@ -3,18 +3,19 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://bdklkktgg3kew"
-path="res://.godot/imported/NotoSans-Regular.ttf-50484be2d7aa15fca46a68fbe13f9eee.fontdata"
+path="res://.godot/imported/NotoSans-Regular.ttf-68b17e18ddb23ba77361057e071f6aee.fontdata"
 
 [deps]
 
-source_file="res://assets/NotoSans-Regular.ttf"
-dest_files=["res://.godot/imported/NotoSans-Regular.ttf-50484be2d7aa15fca46a68fbe13f9eee.fontdata"]
+source_file="res://demo/assets/NotoSans-Regular.ttf"
+dest_files=["res://.godot/imported/NotoSans-Regular.ttf-68b17e18ddb23ba77361057e071f6aee.fontdata"]
 
 [params]
 
 Rendering=null
 antialiasing=1
 generate_mipmaps=true
+disable_embedded_bitmaps=true
 multichannel_signed_distance_field=true
 msdf_pixel_range=8
 msdf_size=48

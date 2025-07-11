@@ -1,8 +1,8 @@
 [gd_scene load_steps=14 format=3 uid="uid://jnog7q8d5x1o"]
 
-[ext_resource type="Script" path="res://src/demo_scene.gd" id="1"]
-[ext_resource type="Script" path="res://src/camera360/camera360.gd" id="2"]
-[ext_resource type="FontFile" uid="uid://bdklkktgg3kew" path="res://assets/NotoSans-Regular.ttf" id="3"]
+[ext_resource type="Script" path="res://demo/demo_scene.gd" id="1"]
+[ext_resource type="Script" path="res://addons/godot360/src/camera360.gd" id="2"]
+[ext_resource type="FontFile" uid="uid://bdklkktgg3kew" path="res://demo/assets/NotoSans-Regular.ttf" id="3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_25ptv"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)

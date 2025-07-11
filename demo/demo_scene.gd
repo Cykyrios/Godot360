@@ -12,7 +12,7 @@ var speed := 0.0
 		if not is_inside_tree():
 			await ready
 		camera.render_quad.mesh.surface_get_material(0).set_shader_parameter("show_grid", show_grid)
-var grid := preload("res://assets/grid.png")
+var grid := preload("res://demo/assets/grid.png")
 
 
 func _ready() -> void:

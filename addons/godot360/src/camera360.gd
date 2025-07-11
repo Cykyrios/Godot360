@@ -34,7 +34,7 @@ func _ready() -> void:
 	render_quad.layers = render_layer
 	render_quad.mesh.surface_set_material(0, mat)
 
-	mat.shader = preload("res://src/camera360/camera360.gdshader")
+	mat.shader = preload("res://addons/godot360/src/camera360.gdshader")
 	mat.set_shader_parameter("fovx", fovx)
 	mat.set_shader_parameter("lens", lens)
 	mat.set_shader_parameter("resolution", get_viewport().size)
