@@ -21,14 +21,15 @@ Note that I am no expert on those projections, you can find much more details ab
 ## Getting started
 The process of enabling 360° rendering is fairly easy:
 * Add a Camera360 node to your scene (you can replace an existing camera or add it as a child of your original camera if you do not want to move code around)
-* Set up exports of the Camera360 node
+* Set up exports of the Camera360 node, including the SubViewport (which you should add as a child of the camera)
 * Make sure the Camera360's cull mask only sees the same layer as the MeshQuad used for rendering (more details below), and remove this layer from all other cameras, meshes, etc.
 
-Note that the resolution export applies to all six cameras, as well as the clip_near and clip_far properties. I recommend not changing the Camera360's own clip planes nor its FoV as they have no effect.
+Note that the subviewport export gets duplicated and applied to all six cameras, and the clip_near and clip_far properties also apply to all cameras.
+I recommend not changing the Camera360's own clip planes nor its FoV as they have no effect.
 
 ## Demo controls
 The included demo allows you to change lenses (projections) and display an overlay of the original cameras:
-* L switches to the next lens/projection
+* L switches to the next lens/projection (hold shift for previous lens)
 * G toggles the grid overlay
 * Use Numpad +/- or the mouse wheel to change the horizontal FoV in increments of 5°
 * Click the left or right mouse buttons to make the camera spin either direction
