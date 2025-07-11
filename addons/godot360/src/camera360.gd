@@ -1,4 +1,4 @@
-@icon("res://addons/godot360/src/Camera360.svg")
+@icon("res://addons/godot360/src/camera360.svg")
 class_name Camera360
 extends Camera3D
 ## Special-purpose camera for omnidirectional rendering

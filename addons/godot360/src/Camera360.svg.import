@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://xlxemjbhqo1s"
-path="res://.godot/imported/Camera360.svg-48c8ba48d5a1a0486d3de6270843fd43.ctex"
+path="res://.godot/imported/camera360.svg-f0ba38dc4bb8ed5ba101a99d888c90fc.ctex"
 metadata={
 "has_editor_variant": true,
 "vram_texture": false
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/godot360/src/Camera360.svg"
-dest_files=["res://.godot/imported/Camera360.svg-48c8ba48d5a1a0486d3de6270843fd43.ctex"]
+source_file="res://addons/godot360/src/camera360.svg"
+dest_files=["res://.godot/imported/camera360.svg-f0ba38dc4bb8ed5ba101a99d888c90fc.ctex"]
 
 [params]
 
