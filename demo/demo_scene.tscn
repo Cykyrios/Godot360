@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://jnog7q8d5x1o"]
+[gd_scene load_steps=17 format=3 uid="uid://jnog7q8d5x1o"]
 
 [ext_resource type="Script" path="res://demo/demo_scene.gd" id="1"]
 [ext_resource type="Script" path="res://addons/godot360/src/camera360.gd" id="2"]
@@ -38,6 +38,16 @@ cache/0/20/0/kerning_overrides/20/0 = Vector2(0, 0)
 font_size = 20
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_1ukpq"]
+
+[sub_resource type="Sky" id="Sky_s3320"]
+sky_material = SubResource("PhysicalSkyMaterial_1ukpq")
+
+[sub_resource type="Environment" id="Environment_0ksy4"]
+background_mode = 2
+sky = SubResource("Sky_s3320")
+tonemap_mode = 2
 
 [sub_resource type="BoxMesh" id="2"]
 size = Vector3(10, 1, 10)
@@ -80,6 +90,7 @@ current = true
 near = 0.5
 far = 5.0
 script = ExtResource("2")
+camera_environment = SubResource("Environment_0ksy4")
 subviewport = NodePath("SubViewport")
 
 [node name="SubViewport" type="SubViewport" parent="Camera360"]

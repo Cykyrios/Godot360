@@ -91,6 +91,7 @@ func _ready() -> void:
 		camera.near = clip_near
 		camera.far = clip_far
 		camera.cull_mask -= render_layer
+		camera.environment = camera_environment
 		cameras.append(camera)
 
 	if num_cameras < 6:
