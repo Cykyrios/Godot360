@@ -5,6 +5,8 @@ I started working on this for two reasons: one of my own projects could benefit 
 
 **Important note**: Godot 4.3 introduced a change in how shaders handle depth, which is incompatible with versions 4.2 and earlier. If you need an earlier version of Godot, you will need to revert commit f22d98e.
 
+<img width="512" height="512" alt="Camera360" src="/images/fisheye.png" /> 
+
 ## Globes and lenses
 The code is based on [these](https://github.com/shaunlebron/blinky) [repos](https://github.com/shaunlebron/flex-fov), with a single standard cube "globe" (I may try to add edge-centered and corner-centered cubes for performance), and the following lenses:
 * Rectilinear: This is the standard projection, the FoV cannot reach nor exceed 180°; distortion in the corners is quite noticeable at an FoV of 120°, and the center of the image gets heavily compressed.
