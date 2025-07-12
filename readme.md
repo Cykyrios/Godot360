@@ -1,9 +1,13 @@
 # Godot360
+![Fisheye projection (~350 degrees)](./images/fisheye_350deg.jpg)
+
 This is an attempt at making a 360° camera in Godot, to allow for both panoramic shots and non-rectilinear FoVs, such as the Panini projection, which can display FoVs of 120-150° with less distortion than the standard rectilinear projection.
 
 I started working on this for two reasons: one of my own projects could benefit from a proper fisheye camera, and to follow up on [this issue on Godot's repo](https://github.com/godotengine/godot/issues/7340).
 
 **Important note**: Godot 4.3 introduced a change in how shaders handle depth, which is incompatible with versions 4.2 and earlier. If you need an earlier version of Godot, you will need to revert commit f22d98e.
+
+![Panini projection (~150 degrees)](./images/panini_150deg.jpg)
 
 ## Globes and lenses
 The code is based on [these](https://github.com/shaunlebron/blinky) [repos](https://github.com/shaunlebron/flex-fov), with a single standard cube "globe" (I may try to add edge-centered and corner-centered cubes for performance), and the following lenses:
@@ -34,9 +38,7 @@ The included demo allows you to change lenses (projections) and display an overl
 * Use Numpad +/- or the mouse wheel to change the horizontal FoV in increments of 5°
 * Click the left or right mouse buttons to make the camera spin either direction
 
-Feel free to add this camera to other projects, following is a screenshot from the [Sponza demo](https://github.com/Calinou/godot-sponza).
-
-![](Images/Fisheye.png)
+Feel free to add this camera to other projects, the above screenshots are from the [Sponza demo](https://github.com/Calinou/godot-sponza).
 
 ## How this works
 The Camera360 node creates 6 cameras with a 90° FoV looking in all directions. Each camera renders to a dedicated Viewport, whose texture is passed to the QuadMesh's fragment shader. The QuadMesh is made fullscreen and displays the final image obtained from the distorted views according to the chosen projection.
