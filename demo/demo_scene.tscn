@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://jnog7q8d5x1o"]
 
-[ext_resource type="Script" path="res://demo/demo_scene.gd" id="1"]
-[ext_resource type="Script" path="res://addons/godot360/src/camera360.gd" id="2"]
+[ext_resource type="Script" uid="uid://b6g75yswv043w" path="res://demo/demo_scene.gd" id="1"]
+[ext_resource type="Script" uid="uid://7m0ekawqrbcw" path="res://addons/godot360/src/camera360.gd" id="2"]
 [ext_resource type="FontFile" uid="uid://bdklkktgg3kew" path="res://demo/assets/NotoSans-Regular.ttf" id="3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_25ptv"]
